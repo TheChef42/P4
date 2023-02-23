@@ -1,9 +1,9 @@
 public class Users {
     private String name;
     private int age;
-    private String gender;
+    private int gender;
 
-    public Users(String name, int age, String gender) {
+    public Users(String name, int age, int gender) {
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -25,11 +25,11 @@ public class Users {
         this.age = age;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 }
