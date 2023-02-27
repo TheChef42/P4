@@ -20,30 +20,89 @@ public class Main {
         Scanner in = new Scanner(System.in);
         Scanner str = new Scanner(System.in);
 
-        System.out.println("1. Insert New Data");
 
-        System.out.println("Enter username : ");
-        usernamedb =str.nextLine();
-        System.out.println("Enter password : ");
-        passworddb=str.nextLine();
-        System.out.println("Enter email : ");
-        email=str.nextLine();
-        System.out.println("Enter balance : ");
-        balance=in.nextInt();
+        while(true) {
+            System.out.println("MySQL Java CRUD Operation");
+            System.out.println("1. Insert");
+            System.out.println("2. Update");
+            System.out.println("3. Delete");
+            System.out.println("4. Select");
+            System.out.println("5. Exit");
+            System.out.println("6. Login");
+            System.out.print("Enter a choice: ");
+            int choice = in.nextInt();
+            System.out.println("-----------------------------------------");
+            switch (choice) {
+                case 1:
+                    System.out.println("1. Insert New Data");
+                    System.out.println("Enter username : ");
+                    usernamedb = str.nextLine();
+                    System.out.println("Enter password : ");
+                    passworddb = str.nextLine();
+                    System.out.println("Enter email : ");
+                    email = str.nextLine();
+                    System.out.println("Enter balance : ");
+                    balance = in.nextInt();
 
-        qry="insert into new_table (username,password,email, balance) values(?,?,?,?)";
+                    qry = "insert into new_table (username,password,email, balance) values(?,?,?,?)";
 
-        st= con.prepareStatement(qry);
-        st.setString(1, usernamedb);
-        st.setString(2, passworddb);
-        st.setString(3, email);
-        st.setInt(4, balance);
-        st.executeUpdate();
-        System.out.println("Data Insert Success");
+                    st = con.prepareStatement(qry);
+                    st.setString(1, usernamedb);
+                    st.setString(2, passworddb);
+                    st.setString(3, email);
+                    st.setInt(4, balance);
+                    st.executeUpdate();
+                    System.out.println("Data Insert Success");
+                    break;
 
+                case 2:
+                    System.out.println("2. Update user");
+                    System.out.println("Enter username : ");
+                    usernamedb = str.nextLine();
+                    System.out.println("Enter password : ");
+                    passworddb = str.nextLine();
+                    System.out.println("Enter email : ");
+                    email = str.nextLine();
+                    System.out.println("Enter balance : ");
+                    balance = in.nextInt();
 
+                    qry = "update new_table set username=?, password = ?, balance = ? where email=?";
+                    st = con.prepareStatement(qry);
+                    st.setString(1, usernamedb);
+                    st.setString(2, passworddb);
+                    st.setString(4, email);
+                    st.setInt(3, balance);
+                    st.executeUpdate();
+                    System.out.println("Data Update Success");
+                    break;
 
+                case 3:
+                    System.out.println("Coming soon");
+                    break;
 
+                case 4:
+                    System.out.println("Coming soon");
+                    break;
 
+                case 5:
+                    System.out.println("Thank You");
+                    System.exit(0);
+                    break;
+
+                case 6:
+                    System.out.println("Coming soon");
+                    /*System.out.println("6. Login to CRUD JAVA 3000!!!!");
+                    System.out.println("Enter username : ");
+                    usernamedb = str.nextLine();
+                    System.out.println("Enter password : ");
+                    passworddb = str.nextLine();
+
+                    qry="SELECT  password FROM new_table WHERE username = 'daniel' ";
+                    rs=stmt.executeQuery(qry);
+                    System.out.println(rs.getInt("password"));*/
+                    break;
+
+            }
+        }
     }
 }
