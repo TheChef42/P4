@@ -25,7 +25,7 @@ CREATE TABLE users (
 public class Main {
     public static void main(String[] args) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String url = "jdbc:mysql://localhost:3306/sys?characterEncoding=utf8";
+        String url = "jdbc:mysql://localhost:3306/selfservice?characterEncoding=utf8";
         String username = "root";
         String password = "root";
         Connection con = DriverManager.getConnection(url,username,password);
@@ -66,7 +66,7 @@ public class Main {
                     System.out.println("Enter balance : ");
                     balance = in.nextInt();
 
-                    qry = "insert into new_table (username,password,email, balance) values(?,?,?,?)";
+                    qry = "insert into users (USERNAME,PASSWORD,EMAIL, BALANCE) values(?,?,?,?)";
 
                     st = con.prepareStatement(qry);
                     st.setString(1, usernamedb);
@@ -88,7 +88,7 @@ public class Main {
                     System.out.println("Enter balance : ");
                     balance = in.nextInt();
 
-                    qry = "update new_table set username=?, password = ?, balance = ? where email=?";
+                    qry = "update users set USERNAME=?, PASSWORD = ?, BALANCE = ? where EMAIL=?";
                     st = con.prepareStatement(qry);
                     st.setString(1, usernamedb);
                     st.setString(2, passworddb);
@@ -119,7 +119,7 @@ public class Main {
                     System.out.println("Enter password : ");
                     passworddb = str.nextLine();
 
-                    qry="SELECT password FROM new_table WHERE username = 'daniel'";
+                    qry="SELECT PASSWORD FROM users WHERE USERNAME = 'daniel'";
                     rs=stmt.executeQuery(qry);
                     rs.next();
                     if (Objects.equals(rs.getString("password"), passworddb)){
