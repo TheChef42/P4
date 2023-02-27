@@ -1,5 +1,27 @@
 import java.sql.*;
+import java.util.Objects;
 import java.util.Scanner;
+
+/*
+to create table from selfservice DB:
+
+CREATE DATABASE IF NOT EXISTS selfservice;
+USE selfservice;
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  USERNAME varchar(50) DEFAULT NULL,
+  PASSWORD varchar(50) DEFAULT NULL,
+  EMAIL varchar(50) DEFAULT NULL,
+  BALANCE int(11) DEFAULT NULL,
+  PRIMARY KEY (ID)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+ */
+
+
+
+//https://www.tutorjoes.in/java_programming_tutorial/mysql_crud_method_in_java
 public class Main {
     public static void main(String[] args) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -91,17 +113,22 @@ public class Main {
 
                 case 6:
                     System.out.println("Coming soon");
-                    /*System.out.println("6. Login to CRUD JAVA 3000!!!!");
+                    System.out.println("6. Login to CRUD JAVA 3000!!!!");
                     System.out.println("Enter username : ");
                     usernamedb = str.nextLine();
                     System.out.println("Enter password : ");
                     passworddb = str.nextLine();
 
-                    qry="SELECT  password FROM new_table WHERE username = 'daniel' ";
+                    qry="SELECT password FROM new_table WHERE username = 'daniel'";
                     rs=stmt.executeQuery(qry);
-                    System.out.println(rs.getInt("password"));*/
+                    rs.next();
+                    if (Objects.equals(rs.getString("password"), passworddb)){
+                        System.out.println("You are logged in!!!");
+                    } else {
+                        System.out.println(rs.getInt("password"));
+                        System.out.println("FAIL!");
+                    }
                     break;
-
             }
         }
     }
