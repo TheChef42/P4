@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.Objects;
 import java.util.Scanner;
 
+
 /*
 to create table from selfservice DB:
 
@@ -18,7 +19,6 @@ CREATE TABLE users (
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
  */
-
 
 
 //https://www.tutorjoes.in/java_programming_tutorial/mysql_crud_method_in_java
@@ -45,7 +45,7 @@ public class Main {
 
         while(true) {
             System.out.println("MySQL Java CRUD Operation");
-            System.out.println("1. Insert");
+            System.out.println("1. Create");
             System.out.println("2. Update");
             System.out.println("3. Delete");
             System.out.println("4. Select");
@@ -63,6 +63,10 @@ public class Main {
                     passworddb = str.nextLine();
                     System.out.println("Enter email : ");
                     email = str.nextLine();
+                    if(checkEmail(email)== false){
+                        break;
+                    };
+                    
                     System.out.println("Enter balance : ");
                     balance = in.nextInt();
 
@@ -99,7 +103,33 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.println("Coming soon");
+                    System.out.println("3. Delete user");
+                    System.out.println("Enter 1 to delete by email, 2 to delete by username: ");
+                    int deleteOption = in.nextInt();
+                    email = "";
+                    usernamedb = "";
+                    if (deleteOption == 1) {
+                        System.out.println("Enter email: ");
+                        email = str.nextLine();
+                        if (checkPassword())
+                        qry = "DELETE FROM users WHERE EMAIL=?";
+                    } else if (deleteOption == 2) {
+                        System.out.println("Enter username: ");
+                        usernamedb = str.nextLine();
+                        qry = "DELETE FROM users WHERE USERNAME=?";
+                    } else {
+                        System.out.println("Invalid option");
+                        break;
+                    }
+
+                    st = con.prepareStatement(qry);
+                    if (deleteOption == 1) {
+                        st.setString(1, email);
+                    } else if (deleteOption == 2) {
+                        st.setString(1, usernamedb);
+                    }
+                    st.executeUpdate();
+                    System.out.println("Data Delete Success");
                     break;
 
                 case 4:
@@ -132,4 +162,17 @@ public class Main {
             }
         }
     }
+
+    public static boolean checkEmail(String email) {
+    String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z0-9.-]+$";
+    if (email.matches(regex)) {
+        return true;
+    } else {
+        System.out.println("Invalid email");
+        return false;
+    }
+    }
+    public static boolean checkPassword(ResultSet user, String password) throws SQLException {
+    return Objects.equals(user.getString("password"), password);
+}
 }
