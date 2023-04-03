@@ -1,0 +1,66 @@
+CREATE DATABASE IF NOT EXISTS selfservice;
+USE selfservice;
+
+CREATE TABLE `customer` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `email` varchar(255),
+  `password` varchar(255),
+  `firstname` varchar(255),
+  `lastname` varchar(255),
+  `balance` float DEFAULT NULL,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `admins` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `username` varchar(255),
+  `password` varchar(255),
+  `firstname` varchar(255),
+  `lastname` varchar(255),
+  `created_by` integer,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `transactions` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `sum` float,
+  `customer` integer,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `transactions_info` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `transaction_id` integer,
+  `product` integer,
+  `amount` integer,
+  `price` varchar(255),
+  `sum_price` float,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `products` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `product` varchar(255) COMMENT 'name of product',
+  `price` float,
+  `stock` integer
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `payment` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `customer_id` integer,
+  `amount` float,
+  `payment_provider` varchar(255),
+  `status` varchar(255),
+  `confirmation_id` integer,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+ALTER TABLE `admins` ADD FOREIGN KEY (`created_by`) REFERENCES `admins` (`id`);
+
+ALTER TABLE `transactions` ADD FOREIGN KEY (`customer`) REFERENCES `customer` (`id`);
+
+ALTER TABLE `transactions_info` ADD FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`);
+
+ALTER TABLE `transactions_info` ADD FOREIGN KEY (`product`) REFERENCES `products` (`id`);
+
+ALTER TABLE `payment` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);

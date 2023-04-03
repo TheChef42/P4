@@ -7,19 +7,72 @@ to create table from selfservice DB:
 
 CREATE DATABASE IF NOT EXISTS selfservice;
 USE selfservice;
-DROP TABLE IF EXISTS users;
-CREATE TABLE users (
-  ID int(11) NOT NULL AUTO_INCREMENT,
-  USERNAME varchar(50) DEFAULT NULL,
-  PASSWORD varchar(50) DEFAULT NULL,
-  EMAIL varchar(50) DEFAULT NULL,
-  BALANCE int(11) DEFAULT NULL,
-  PRIMARY KEY (ID)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `customer` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `email` varchar(255),
+  `password` varchar(255),
+  `firstname` varchar(255),
+  `lastname` varchar(255),
+  `balance` float DEFAULT NULL,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `admins` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `username` varchar(255),
+  `password` varchar(255),
+  `firstname` varchar(255),
+  `lastname` varchar(255),
+  `created_by` integer,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `transactions` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `sum` float,
+  `customer` integer,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `transactions_info` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `transaction_id` integer,
+  `product` integer,
+  `amount` integer,
+  `price` varchar(255),
+  `sum_price` float,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `products` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `product` varchar(255) COMMENT 'name of product',
+  `price` float,
+  `stock` integer
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `payment` (
+  `id` integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `customer_id` integer,
+  `amount` float,
+  `payment_provider` varchar(255),
+  `status` varchar(255),
+  `confirmation_id` integer,
+  `created_at` timestamp
+)ENGINE=InnoDB AUTO_INCREMENT=1;
+
+ALTER TABLE `admins` ADD FOREIGN KEY (`created_by`) REFERENCES `admins` (`id`);
+
+ALTER TABLE `transactions` ADD FOREIGN KEY (`customer`) REFERENCES `customer` (`id`);
+
+ALTER TABLE `transactions_info` ADD FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`);
+
+ALTER TABLE `transactions_info` ADD FOREIGN KEY (`product`) REFERENCES `products` (`id`);
+
+ALTER TABLE `payment` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
 
  */
-
-
 
 //https://www.tutorjoes.in/java_programming_tutorial/mysql_crud_method_in_java
 public class Main {
@@ -55,7 +108,7 @@ public class Main {
             int choice = in.nextInt();
             System.out.println("-----------------------------------------");
             switch (choice) {
-                case 1:
+                case 1 -> {
                     System.out.println("1. Insert New Data");
                     System.out.println("Enter username : ");
                     usernamedb = str.nextLine();
@@ -65,9 +118,7 @@ public class Main {
                     email = str.nextLine();
                     System.out.println("Enter balance : ");
                     balance = in.nextInt();
-
                     qry = "insert into users (USERNAME,PASSWORD,EMAIL, BALANCE) values(?,?,?,?)";
-
                     st = con.prepareStatement(qry);
                     st.setString(1, usernamedb);
                     st.setString(2, passworddb);
@@ -75,9 +126,8 @@ public class Main {
                     st.setInt(4, balance);
                     st.executeUpdate();
                     System.out.println("Data Insert Success");
-                    break;
-
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("2. Update user");
                     System.out.println("Enter username : ");
                     usernamedb = str.nextLine();
@@ -87,7 +137,6 @@ public class Main {
                     email = str.nextLine();
                     System.out.println("Enter balance : ");
                     balance = in.nextInt();
-
                     qry = "update users set USERNAME=?, PASSWORD = ?, BALANCE = ? where EMAIL=?";
                     st = con.prepareStatement(qry);
                     st.setString(1, usernamedb);
@@ -96,39 +145,30 @@ public class Main {
                     st.setInt(3, balance);
                     st.executeUpdate();
                     System.out.println("Data Update Success");
-                    break;
-
-                case 3:
-                    System.out.println("Coming soon");
-                    break;
-
-                case 4:
-                    System.out.println("Coming soon");
-                    break;
-
-                case 5:
+                }
+                case 3 -> System.out.println("Coming soon");
+                case 4 -> System.out.println("Coming soon");
+                case 5 -> {
                     System.out.println("Thank You");
                     System.exit(0);
-                    break;
-
-                case 6:
+                }
+                case 6 -> {
                     System.out.println("Coming soon");
                     System.out.println("6. Login to CRUD JAVA 3000!!!!");
                     System.out.println("Enter username : ");
                     usernamedb = str.nextLine();
                     System.out.println("Enter password : ");
                     passworddb = str.nextLine();
-
-                    qry="SELECT PASSWORD FROM users WHERE USERNAME = 'daniel'";
-                    rs=stmt.executeQuery(qry);
+                    qry = "SELECT PASSWORD FROM users WHERE USERNAME = 'daniel'";
+                    rs = stmt.executeQuery(qry);
                     rs.next();
-                    if (Objects.equals(rs.getString("password"), passworddb)){
+                    if (Objects.equals(rs.getString("password"), passworddb)) {
                         System.out.println("You are logged in!!!");
                     } else {
                         System.out.println(rs.getInt("password"));
                         System.out.println("FAIL!");
                     }
-                    break;
+                }
             }
         }
     }
