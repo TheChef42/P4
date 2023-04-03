@@ -96,6 +96,9 @@ public class Main {
         Scanner str = new Scanner(System.in);
 
 
+
+
+
         while(true) {
             System.out.println("MySQL Java CRUD Operation");
             System.out.println("1. Insert");
