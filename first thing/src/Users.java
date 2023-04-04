@@ -1,4 +1,5 @@
 public class Users {
+    private int ID;
     private String email;
     protected String password;
     public String firstName;
@@ -7,8 +8,10 @@ public class Users {
     protected void login() {
         //TODO: Implement login
     }
-    private void verifyPassword() {
+    public boolean verifyPassword(String username, String password) {
         //TODO: create method to verify password
+        
+        return false;
     }
     public void logout() {
         //TODO: Implement logout

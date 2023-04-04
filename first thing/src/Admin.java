@@ -1,7 +1,5 @@
 public class Admin {
 
-    private String adminID;
-
     public void editUser(){
         //TODO: how to edit admin
     }
