@@ -40,7 +40,7 @@ public class Users {
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
-            str.close()
+            str.close();
             if (rs.next() && Objects.equals(rs.getString("PASSWORD"), password)) {
                 System.out.println("You are logged in!!!");
                 return true;
