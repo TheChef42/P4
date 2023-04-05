@@ -1,5 +1,7 @@
+import java.sql.*;
 public class Admin {
 
+    //public Admin(){}
     public void editUser(){
         //TODO: how to edit admin
     }
@@ -14,8 +16,24 @@ public class Admin {
         int productID = 0;
         return productID;
     }
-    public void createProduct(){
-        //TODO: implement how the admin can create products
+    public void createProduct(String productName, float productPrice, int productStock){
+        try {
+            Connection con = ConnectionManager.getConnection();
+            String qry = "INSERT INTO products (product, price, stock) VALUES (?,?,?)";
+            PreparedStatement st = con.prepareStatement(qry);
+            st.setString(1,productName);
+            st.setFloat(2, productPrice);
+            st.setInt(3, productStock);
+            st.executeUpdate();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+    public static void main(String[] args){
+        Admin chris = new Admin();
+        chris.createProduct("sprite",10,200);
+        System.out.println("Du go");
+
     }
     public void updateProduct(){
         //TODO: implement updateProduct

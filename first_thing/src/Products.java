@@ -8,22 +8,20 @@ public class Products {
     public Products() {
     }
 
-    public Products(int productID) throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String url = "jdbc:mysql://localhost:3306/selfservice?characterEncoding=utf8";
-        String username = "root";
-        String password = "root";
-        Connection con = DriverManager.getConnection(url, username, password);
-        Statement stmt = con.createStatement();
-        String qry = "";
-        qry = "SELECT * FROM products WHERE id = ?";
-        PreparedStatement st = con.prepareStatement(qry);
-        st.setInt(1, productID);
-        ResultSet rs = st.executeQuery();
-        rs.next();
-        this.name = rs.getString("product");
-        this.price = (float)rs.getInt("price");
-        this.stock = rs.getInt("stock");
+    public Products(int productID) {
+        try {
+            Connection con = ConnectionManager.getConnection();
+            String qry = "SELECT * FROM products WHERE id = ?";
+            PreparedStatement st = con.prepareStatement(qry);
+            st.setInt(1, productID);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            this.name = rs.getString("product");
+            this.price = (float) rs.getInt("price");
+            this.stock = rs.getInt("stock");
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public Products(String productName, float productPrice, int productStock) {
