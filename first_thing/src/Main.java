@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Objects;
 import java.util.Scanner;
-import first_thing.src.ConnectionManager;
+import ConnectionManager;
 
 /*
 to create table from selfservice DB:
