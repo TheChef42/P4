@@ -1,8 +1,7 @@
 import java.sql.*;
-<<<<<<< HEAD
+import java.util.Scanner;
+import java.util.Objects;
 
-=======
->>>>>>> b8901f198c7db196a3b108a8f1758a02a2490582
 public class Users {
     private int ID;
     private String email;
@@ -30,9 +29,10 @@ public class Users {
     }
     public boolean verifyPassword(String email, String password) {
         Connection con = ConnectionManager.getConnection();
+        Scanner str = new Scanner(System.in);
         try {
             System.out.println("Login");
-            System.out.println("Enter username : ");
+            System.out.println("Enter email : ");
             email = str.nextLine();
             System.out.println("Enter password : ");
             password = str.nextLine();
@@ -40,6 +40,7 @@ public class Users {
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
+            str.close()
             if (rs.next() && Objects.equals(rs.getString("PASSWORD"), password)) {
                 System.out.println("You are logged in!!!");
                 return true;
