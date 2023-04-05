@@ -1,21 +1,61 @@
+import java.sql.*;
 public class Products {
     private int productID;
-    private String productType;
+    private String name;
+    private float price;
+    private int stock;
+
+    public Products() {
+    }
+
+    public Products(int productID) throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/selfservice?characterEncoding=utf8";
+        String username = "root";
+        String password = "root";
+        Connection con = DriverManager.getConnection(url, username, password);
+        Statement stmt = con.createStatement();
+        String qry = "";
+        qry = "SELECT * FROM products WHERE id = ?";
+        PreparedStatement st = con.prepareStatement(qry);
+        st.setInt(1, productID);
+        ResultSet rs = st.executeQuery();
+        rs.next();
+        this.name = rs.getString("product");
+        this.price = (float)rs.getInt("price");
+        this.stock = rs.getInt("stock");
+    }
+
+    public Products(String productName, float productPrice, int productStock) {
+        this.name = productName;
+        this.price = productPrice;
+        this.stock = productStock;
+    }
+
+    public static void main(String[] args) throws Exception {
+        Products cola = new Products("Cola", 100.0F, 2);
+        System.out.println(cola.name + " " + cola.price + " " + cola.stock);
+        Products fanta = new Products(2);
+        System.out.println(fanta.name + " " + fanta.price + " " + fanta.stock);
+    }
 
     public int getProductID() {
-        return productID;
+        return this.productID;
     }
 
-    public String getProductType() {
-        return productType;
+    public String getName() {
+        return this.name;
     }
-    public void deleteProduct(int productID){
-        //TODO: implement how to delete a product
+
+    public void setProductID(int productID) {
+        this.productID = productID;
     }
-    public void createProduct (){
-        //TODO: implement how to create a product
+
+    public float getPrice() {
+        return this.price;
     }
-    public void updateProduct(){
-        //TODO: implement how to update a product
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }
