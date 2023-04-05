@@ -24,6 +24,7 @@ public class Users {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
     protected void login() {
         //TODO: Implement login
     }
@@ -65,5 +66,4 @@ public class Users {
     public String getName() {
         return firstName + " " + lastName;
     }
-}
 }
