@@ -28,42 +28,16 @@ public class Users {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-    protected void login(String email, String password) {
-        //TODO: Implement login
-        Connection con = ConnectionManager.getConnection();
-        try {
-            System.out.println("Login");
-    }
-    protected void login() {
-        Scanner str = new Scanner(System.in);
-        System.out.println("Login: ");
-        System.out.println("E-mail: ");
-        String email = str.nextLine();
-        System.out.println("Password: ");
-        String password = str.nextLine();
-        str.close();
-        if (verifyPassword(email, password) == true){
-            // start session??
-            System.out.println("Login successful");
-            this.setEmail(email);
-            this.authenticated = true;
-            return;
-        }else{
-            System.out.println("Login failed");
-            return;
-        }
-
-
-    }
-    public boolean verifyPassword(String email, String password) {
+    
+    public boolean login(String email, String password) {
         Connection con = ConnectionManager.getConnection();
         try {
             String qry = "SELECT PASSWORD FROM users WHERE USERNAME = ?";
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
-
+            rs.getString(password);
+            
             if (verifyPassword(email, password) == true) {
                 //vi skal in på dashboard her
                 //TODO: perform any additional tasks after login
