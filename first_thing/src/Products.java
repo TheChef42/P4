@@ -4,6 +4,7 @@ public class Products {
     private String name;
     private float price;
     private int stock;
+    public static String[] products;
 
     public Products() {
     }
@@ -35,6 +36,29 @@ public class Products {
         System.out.println(cola.name + " " + cola.price + " " + cola.stock);
         Products fanta = new Products(2);
         System.out.println(fanta.name + " " + fanta.price + " " + fanta.stock);
+    }
+    public static String[] getProducts() {
+        //TODO: implement how to return the products
+        try {
+            Connection con = ConnectionManager.getConnection();
+            String qry = "SELECT * FROM products";
+            PreparedStatement st = con.prepareStatement(qry);
+            ResultSet rs = st.executeQuery();
+            System.out.print("id" + "\t\t");
+            System.out.print("product" + "\t\t");
+            System.out.print("price" + "\t\t");
+            System.out.println(("stock") + "\t\t");
+            while(rs.next()){
+                System.out.print(rs.getInt("id") + "\t\t");
+                System.out.print(rs.getString("product") + "\t\t");
+                System.out.print(rs.getString("price") + "\t\t");
+                System.out.println(rs.getString("stock") + "\t\t");
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return products;
     }
 
     public int getProductID() {
