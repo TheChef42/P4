@@ -77,12 +77,28 @@ ALTER TABLE `payment` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id
 //https://www.tutorjoes.in/java_programming_tutorial/mysql_crud_method_in_java
 public class Main {
     public static void main(String[] args) throws Exception {
-        Connection con = ConnectionManager.getConnection();
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/selfservice?characterEncoding=utf8";
+        String username = "root";
+        String password = "root";
+        Connection con = DriverManager.getConnection(url,username,password);
+
+        Statement stmt =con.createStatement();
+        ResultSet rs;
+        PreparedStatement st;
+
+        String qry="";
+
+        int id, balance;
+        String usernamedb, email, passworddb;
+
+        Scanner in = new Scanner(System.in);
+        Scanner str = new Scanner(System.in);
 
 
-        String usernamedb, passworddb, email;
 
-        int balance;
+
+
         while(true) {
             System.out.println("MySQL Java CRUD Operation");
             System.out.println("1. Insert");
