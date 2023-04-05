@@ -5,8 +5,16 @@ public class Admin {
     public void editUser(){
         //TODO: how to edit admin
     }
-    public void viewUser(){
-        //TODO: implement how to view a user or users
+    private void viewUsers(){
+        try {
+            Connection con = ConnectionManager.getConnection();
+            String qry = "SELECT * customers";
+            PreparedStatement st = con.prepareStatement(qry);
+            ResultSet rs = st.executeQuery();
+            
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
     public void deleteUser(){
         //TODO: implement hpw to delete a user as admin
@@ -30,8 +38,10 @@ public class Admin {
         }
     }
     public static void main(String[] args){
-        Admin chris = new Admin();
-        chris.createProduct("sprite",10,200);
+        //Admin chris = new Admin();
+        //chris.createProduct("sprite",10,200);
+        Products cola = new Products(2);
+        System.out.println(cola.getName() + cola.getPrice());
         System.out.println("Du go");
 
     }

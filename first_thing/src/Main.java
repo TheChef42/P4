@@ -118,6 +118,9 @@ public class Main {
                     email = str.nextLine();
                     System.out.println("Enter balance : ");
                     balance = in.nextInt();
+                    Users currentUser = new Users();
+                    currentUser.login();
+
                     qry = "insert into users (USERNAME,PASSWORD,EMAIL, BALANCE) values(?,?,?,?)";
                     st = con.prepareStatement(qry);
                     st.setString(1, usernamedb);

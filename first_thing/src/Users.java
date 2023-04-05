@@ -8,6 +8,11 @@ public class Users {
     protected String password;
     public String firstName;
     public String lastName;
+    public boolean authenticated;
+
+    public Users(){
+        authenticated = false;
+    }
 
     protected void createUser(String email, String password, String firstName, String lastName) {
         try {
@@ -35,6 +40,8 @@ public class Users {
         if (verifyPassword(email, password) == true){
             // start session??
             System.out.println("Login successful");
+            this.setEmail(email);
+            this.authenticated = true;
             return;
         }else{
             System.out.println("Login failed");
@@ -75,5 +82,9 @@ public class Users {
 
     public String getName() {
         return firstName + " " + lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

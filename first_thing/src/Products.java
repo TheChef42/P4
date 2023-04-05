@@ -56,4 +56,8 @@ public class Products {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    public int getStock() {
+        return stock;
+    }
 }
