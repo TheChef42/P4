@@ -8,6 +8,11 @@ public class Users {
     protected String password;
     public String firstName;
     public String lastName;
+    public boolean authenticated;
+
+    public Users(){
+        authenticated = false;
+    }
 
     protected void createUser(String email, String password, String firstName, String lastName) {
         try {
@@ -29,6 +34,31 @@ public class Users {
         Connection con = ConnectionManager.getConnection();
         try {
             System.out.println("Login");
+    }
+    protected void login() {
+        Scanner str = new Scanner(System.in);
+        System.out.println("Login: ");
+        System.out.println("E-mail: ");
+        String email = str.nextLine();
+        System.out.println("Password: ");
+        String password = str.nextLine();
+        str.close();
+        if (verifyPassword(email, password) == true){
+            // start session??
+            System.out.println("Login successful");
+            this.setEmail(email);
+            this.authenticated = true;
+            return;
+        }else{
+            System.out.println("Login failed");
+            return;
+        }
+
+
+    }
+    public boolean verifyPassword(String email, String password) {
+        Connection con = ConnectionManager.getConnection();
+        try {
             String qry = "SELECT PASSWORD FROM users WHERE USERNAME = ?";
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
@@ -110,5 +140,8 @@ public class Users {
     public String getName() {
         return firstName + " " + lastName;
     }
-}
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
