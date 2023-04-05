@@ -5,7 +5,19 @@ public class Users {
     public String firstName;
     public String lastName;
 
-    
+    protected void createUser(String email, String password, String firstName, String lastName) {
+        try {
+            String qry = "insert into users (USERNAME,PASSWORD,EMAIL, BALANCE) values(?,?,?,?)";
+            PreparedStatement st = con.prepareStatement(qry);
+            st.setString(1, email);
+            st.setString(2, password);
+            st.setString(3, firstName);
+            st.setString(4, lastName);
+            st.executeUpdate();
+            System.out.println("User created succesfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     protected void login() {
         //TODO: Implement login
     }
