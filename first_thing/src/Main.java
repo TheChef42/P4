@@ -1,7 +1,6 @@
 import java.sql.*;
 import java.util.Objects;
 import java.util.Scanner;
-import ConnectionManager;
 
 /*
 to create table from selfservice DB:
@@ -78,12 +77,12 @@ ALTER TABLE `payment` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id
 //https://www.tutorjoes.in/java_programming_tutorial/mysql_crud_method_in_java
 public class Main {
     public static void main(String[] args) throws Exception {
-        
+        Connection con = ConnectionManager.getConnection();
 
 
+        String usernamedb, passworddb, email;
 
-
-
+        int balance;
         while(true) {
             System.out.println("MySQL Java CRUD Operation");
             System.out.println("1. Insert");
