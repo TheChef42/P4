@@ -24,10 +24,7 @@ public class Users {
             e.printStackTrace();
         }
     }
-    protected void login() {
-        //TODO: Implement login
-    }
-    public boolean verifyPassword(String email, String password) {
+    protected boolean login() {
         Connection con = ConnectionManager.getConnection();
         Scanner str = new Scanner(System.in);
         try {
@@ -36,6 +33,15 @@ public class Users {
             email = str.nextLine();
             System.out.println("Enter password : ");
             password = str.nextLine();
+    
+            if (verifyPassword(email, password) == true) {
+                //somtehing
+                        }
+    }
+    public boolean verifyPassword(String email, String password) {
+        Connection con = ConnectionManager.getConnection();
+        Scanner str = new Scanner(System.in);
+        try {
             String qry = "SELECT PASSWORD FROM users WHERE USERNAME = ?";
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
