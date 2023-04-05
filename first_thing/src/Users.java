@@ -28,34 +28,24 @@ public class Users {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    
-    public boolean login(String email, String password) {
-        Connection con = ConnectionManager.getConnection();
-        try {
-            String qry = "SELECT PASSWORD FROM users WHERE USERNAME = ?";
-            PreparedStatement st = con.prepareStatement(qry);
-            st.setString(1, email);
-            ResultSet rs = st.executeQuery();
-            rs.getString(password);
-            
-            if (verifyPassword(email, password) == true) {
-                //vi skal in på dashboard her
-                //TODO: perform any additional tasks after login
-            } else {
-                System.out.println("Invalid email or password.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    }
+    public void login(String email, String password) {
+        if (verifyPassword(email, password)) {
+            System.out.println("Logged in!");
+        } else {
+            System.out.println("Access denied!");
         }
     }
 
     public boolean verifyPassword(String email, String password) {
+        Connection con = ConnectionManager.getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        String query = "SELECT PASSWORD FROM users WHERE EMAIL=?";
+        try {
+            st = con.prepareStatement(query);
+            st.setString(1, email);
+            rs = st.executeQuery();
             if (rs.next() && Objects.equals(rs.getString("PASSWORD"), password)) {
                 System.out.println("You are logged in!!!");
                 return true;
@@ -63,14 +53,34 @@ public class Users {
                 System.out.println("FAIL!");
                 return false;
             }
-}
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+            // closing the connection:
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void logout() {
         //TODO: Implement logout
     }
     public void seeUserAccount() {
         //TODO: Implement the possibilitie to see user account
     }
-    public void deleteAccount() {
+    public void deleteAccount(int accountId) {
         //TODO: Implement how to delete a useraccount
         Connection con = ConnectionManager.getConnection();
         PreparedStatement pstmt = null;
@@ -107,8 +117,6 @@ public class Users {
                 e.printStackTrace();
             }
         }
-    
-        return success;
     }
 
     public String getName() {
