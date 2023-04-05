@@ -48,10 +48,8 @@ public class Users {
             st.setString(1, email);
             rs = st.executeQuery();
             if (rs.next() && Objects.equals(rs.getString("PASSWORD"), password)) {
-                System.out.println("You are logged in!!!");
                 return true;
             } else {
-                System.out.println("FAIL!");
                 return false;
             }
         } catch (SQLException e) {
