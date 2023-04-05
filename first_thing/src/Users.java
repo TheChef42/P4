@@ -23,23 +23,35 @@ public class Users {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    protected void login() {
+
+    protected void login(String email, String password) {
         //TODO: Implement login
-    }
-    public boolean verifyPassword(String email, String password) {
         Connection con = ConnectionManager.getConnection();
-        Scanner str = new Scanner(System.in);
         try {
             System.out.println("Login");
-            System.out.println("Enter email : ");
-            email = str.nextLine();
-            System.out.println("Enter password : ");
-            password = str.nextLine();
             String qry = "SELECT PASSWORD FROM users WHERE USERNAME = ?";
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
-            str.close();
+
+            if (verifyPassword(email, password) == true) {
+                //vi skal in på dashboard her
+                //TODO: perform any additional tasks after login
+            } else {
+                System.out.println("Invalid email or password.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean verifyPassword(String email, String password) {
             if (rs.next() && Objects.equals(rs.getString("PASSWORD"), password)) {
                 System.out.println("You are logged in!!!");
                 return true;
@@ -47,12 +59,7 @@ public class Users {
                 System.out.println("FAIL!");
                 return false;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
+}
     public void logout() {
         //TODO: Implement logout
     }
@@ -61,6 +68,43 @@ public class Users {
     }
     public void deleteAccount() {
         //TODO: Implement how to delete a useraccount
+        Connection con = ConnectionManager.getConnection();
+        PreparedStatement pstmt = null;
+        boolean success = false;
+    
+        try {
+            // Prepare the SQL query to delete the account
+            String sql = "DELETE FROM accounts WHERE account_id = ?";
+            pstmt = con.prepareStatement(sql);
+    
+            // Set the account ID parameter
+            pstmt.setInt(1, accountId);
+    
+            // Execute the query and check the return value
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Account deleted successfully");
+                success = true;
+            } else {
+                System.out.println("Account not found");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close the prepared statement and database connection
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    
+        return success;
     }
 
     public String getName() {
