@@ -1,8 +1,5 @@
 import java.sql.*;
-<<<<<<< HEAD
 
-=======
->>>>>>> b8901f198c7db196a3b108a8f1758a02a2490582
 public class Users {
     private int ID;
     private String email;
@@ -24,7 +21,6 @@ public class Users {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
     protected void login() {
         //TODO: Implement login
     }
@@ -66,4 +62,5 @@ public class Users {
     public String getName() {
         return firstName + " " + lastName;
     }
+}
 }
