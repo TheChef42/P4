@@ -32,7 +32,7 @@ public class Users {
     public void login(String email, String password) {
         if (verifyPassword(email, password)) {
             System.out.println("Logged in!");
-            Users currentUser = new Users();
+            this.authenticated = true;
         } else {
             System.out.println("Access denied!");
         }
@@ -42,12 +42,12 @@ public class Users {
         Connection con = ConnectionManager.getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
-        String query = "SELECT PASSWORD FROM users WHERE EMAIL=?";
+        String query = "SELECT password FROM customer WHERE email=?";
         try {
             st = con.prepareStatement(query);
             st.setString(1, email);
             rs = st.executeQuery();
-            if (rs.next() && Objects.equals(rs.getString("PASSWORD"), password)) {
+            if (rs.next() && Objects.equals(rs.getString("password"), password)) {
                 System.out.println("You are logged in!!!");
                 return true;
             } else {

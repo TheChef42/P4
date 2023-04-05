@@ -114,21 +114,9 @@ public class Main {
                     usernamedb = str.nextLine();
                     System.out.println("Enter password : ");
                     passworddb = str.nextLine();
-                    System.out.println("Enter email : ");
-                    email = str.nextLine();
-                    System.out.println("Enter balance : ");
-                    balance = in.nextInt();
                     Users currentUser = new Users();
-                    currentUser.login();
-
-                    qry = "insert into users (USERNAME,PASSWORD,EMAIL, BALANCE) values(?,?,?,?)";
-                    st = con.prepareStatement(qry);
-                    st.setString(1, usernamedb);
-                    st.setString(2, passworddb);
-                    st.setString(3, email);
-                    st.setInt(4, balance);
-                    st.executeUpdate();
-                    System.out.println("Data Insert Success");
+                    currentUser.login(usernamedb,passworddb);
+                    System.out.print(currentUser.authenticated);
                 }
                 case 2 -> {
                     System.out.println("2. Update user");

@@ -29,20 +29,18 @@ public class Admin {
                 System.out.print(rs.getFloat("balance") + "\t\t");
                 System.out.println(rs.getTimestamp("created_at"));
             }
-
         } catch(SQLException e){
             e.printStackTrace();
         }
     }
-    public void deleteUser(int id){
-        //TODO: implement hpw to delete a user as admin
+    private void deleteUser(int id){
         try{
             Connection con = ConnectionManager.getConnection();
             String qry = "DELETE FROM customer WHERE id = ?";
             PreparedStatement st = con.prepareStatement(qry);
             st.setInt(1,id);
             st.executeUpdate();
-    }catch (SQLException e){
+    } catch (SQLException e){
             e.printStackTrace();
         }
     }
