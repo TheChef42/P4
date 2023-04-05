@@ -1,6 +1,6 @@
 public class Transaction {
     private int id;
-    private Time date;
+    //private Time date;
     private String[] products;
     private String user;
 
