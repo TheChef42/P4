@@ -32,6 +32,7 @@ public class Users {
     public void login(String email, String password) {
         if (verifyPassword(email, password)) {
             System.out.println("Logged in!");
+            Users currentUser = new Users();
         } else {
             System.out.println("Access denied!");
         }
