@@ -25,22 +25,31 @@ public class Users {
         }
     }
     protected void login() {
-        //TODO: Implement login
+        Scanner str = new Scanner(System.in);
+        System.out.println("Login: ");
+        System.out.println("E-mail: ");
+        String email = str.nextLine();
+        System.out.println("Password: ");
+        String password = str.nextLine();
+        str.close();
+        if (verifyPassword(email, password) == true){
+            // start session??
+            System.out.println("Login successful");
+            return;
+        }else{
+            System.out.println("Login failed");
+            return;
+        }
+
+
     }
     public boolean verifyPassword(String email, String password) {
         Connection con = ConnectionManager.getConnection();
-        Scanner str = new Scanner(System.in);
         try {
-            System.out.println("Login");
-            System.out.println("Enter email : ");
-            email = str.nextLine();
-            System.out.println("Enter password : ");
-            password = str.nextLine();
             String qry = "SELECT PASSWORD FROM users WHERE USERNAME = ?";
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
-            str.close();
             if (rs.next() && Objects.equals(rs.getString("PASSWORD"), password)) {
                 System.out.println("You are logged in!!!");
                 return true;
