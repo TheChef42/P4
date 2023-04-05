@@ -1,3 +1,4 @@
+import java.sql.*;
 public class Users {
     private int ID;
     private String email;
@@ -7,6 +8,7 @@ public class Users {
 
     protected void createUser(String email, String password, String firstName, String lastName) {
         try {
+            Connection con = ConnectionManager.getConnection();
             String qry = "insert into users (USERNAME,PASSWORD,EMAIL, BALANCE) values(?,?,?,?)";
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
@@ -39,4 +41,5 @@ public class Users {
     public String getName() {
         return firstName + " " + lastName;
     }
+}
 }
