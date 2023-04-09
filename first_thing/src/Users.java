@@ -1,17 +1,16 @@
 import java.sql.*;
 import java.util.Scanner;
 import java.util.Objects;
-
 public class Users {
     private int ID;
     private String email;
     protected String password;
     public String firstName;
     public String lastName;
-    public boolean authenticated;
+    private float balance;
+    public Timestamp created_at;
 
     public Users(){
-        authenticated = false;
     }
 
     protected void createUser(String email, String password, String firstName, String lastName) {
@@ -29,14 +28,50 @@ public class Users {
             e.printStackTrace();
         }
     }
-    public void login(String email, String password) {
+    public Users login(String email, String password) {
+        // declaring it out of the if statement to return it at the end
+        Users currentUser = null;
         if (verifyPassword(email, password)) {
-            System.out.println("Logged in!");
-            Users currentUser = new Users();
+            currentUser = new Users();
+            Connection con = ConnectionManager.getConnection();
+            PreparedStatement st = null;
+            ResultSet rs = null;
+            String query = "SELECT * FROM users WHERE EMAIL=?";
+    
+            try {
+                st = con.prepareStatement(query);
+                st.setString(1, email);
+                rs = st.executeQuery();
+    
+                if (rs.next()) {
+                    currentUser.ID = rs.getInt("id");
+                    currentUser.email = email;
+                    currentUser.password = password;
+                    currentUser.firstName = rs.getString("firstname");
+                    currentUser.lastName = rs.getString("lastname");
+                    currentUser.balance = rs.getFloat("balance");
+                    currentUser.created_at = rs.getTimestamp("created_at");
+                }
+    
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.getMessage());
+            } finally {
+                try{
+                    // closing input options
+                    rs.close();
+                    st.close();
+                    con.close();
+
+                } catch (SQLException ex) {
+                    System.out.println("Error: " + ex.getMessage());
+                }
+            }
         } else {
             System.out.println("Access denied!");
         }
+        return currentUser;
     }
+    
 
     public boolean verifyPassword(String email, String password) {
         Connection con = ConnectionManager.getConnection();
@@ -73,11 +108,18 @@ public class Users {
         }
     }
 
-    public void logout() {
-        //TODO: Implement logout
+    public void logout(Users currentUser) {
+        currentUser = null;
     }
     public void seeUserAccount() {
-        //TODO: Implement the possibilitie to see user account
+        System.out.print(this.ID);
+        System.out.print(this.email);
+        // may have to be protected somehow:
+        System.out.print(this.password);
+        System.out.print(this.firstName);
+        System.out.print(this.lastName);
+        System.out.print(this.balance);
+        System.out.print(this.created_at);
     }
     public void deleteAccount(int accountId) {
         //TODO: Implement how to delete a useraccount
@@ -91,7 +133,7 @@ public class Users {
             pstmt = con.prepareStatement(sql);
     
             // Set the account ID parameter
-            pstmt.setInt(1, accountId);
+            pstmt.setInt(1, this.ID);
     
             // Execute the query and check the return value
             int rowsAffected = pstmt.executeUpdate();
@@ -119,9 +161,10 @@ public class Users {
     }
 
     public String getName() {
-        return firstName + " " + lastName;
+        return this.firstName + " " + this.lastName;
     }
 
+    // what is this for??
     public void setEmail(String email) {
         this.email = email;
     }
