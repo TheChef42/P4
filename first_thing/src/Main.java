@@ -116,7 +116,6 @@ public class Main {
                     passworddb = str.nextLine();
                     Users currentUser = new Users();
                     currentUser.login(usernamedb,passworddb);
-                    System.out.print(currentUser.authenticated);
                 }
                 case 2 -> {
                     System.out.println("2. Update user");
