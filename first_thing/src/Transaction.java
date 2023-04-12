@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Transaction {
     private int id;
@@ -35,14 +36,22 @@ public class Transaction {
     public void getTransactionsList(){
         //TODO: implement how to return the transactions
     }
-    public void addProductToTransaction(){
+    public void addProductToTransaction(String product){
         //TODO: implement to add product to transaction
+        ArrayList<String> productList = new ArrayList<>(Arrays.asList(products));
+        productList.add(product);
+        products = productList.toArray(new String[productList.size()]);
+        System.out.println(productList);
     }
     public void storeTransaction(){
         //TODO: implement to store the transaction in the databse
     }
     public void deleteProductFromList(){
         //TODO: implement to delete a product from the list
+        ArrayList<String> productList = new ArrayList<>(Arrays.asList(products));
+        productList.remove(index);
+        products = productList.toArray(new String[productList.size()]);
+        System.out.println("Product at index " + index + " deleted successfully.");
     }
     public void checkOut(){
         //TODO: implement the checkout
