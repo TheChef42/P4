@@ -31,12 +31,7 @@ public class Products {
         this.stock = productStock;
     }
 
-    public static void main(String[] args) throws Exception {
-        Products cola = new Products("Cola", 100.0F, 2);
-        System.out.println(cola.name + " " + cola.price + " " + cola.stock);
-        Products fanta = new Products(2);
-        System.out.println(fanta.name + " " + fanta.price + " " + fanta.stock);
-    }
+
     public static String[] getProducts() {
         //TODO: implement how to return the products
         try {
@@ -83,5 +78,12 @@ public class Products {
 
     public int getStock() {
         return stock;
+    }
+
+    public static void main(String[] args) throws Exception {
+        Products cola = new Products("Cola", 100.0F, 2);
+        System.out.println(cola.name + " " + cola.price + " " + cola.stock);
+        Products fanta = new Products(2);
+        System.out.println(fanta.name + " " + fanta.price + " " + fanta.stock);
     }
 }
