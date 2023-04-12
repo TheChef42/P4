@@ -6,9 +6,6 @@ public class Products {
     private int stock;
     public static String[] products;
 
-    public Products() {
-    }
-
     public Products(int productID) {
         try {
             Connection con = ConnectionManager.getConnection();
@@ -81,9 +78,9 @@ public class Products {
     }
 
     public static void main(String[] args) throws Exception {
-        Products cola = new Products("Cola", 100.0F, 2);
+        Products cola = new Products("Cola", 100, 2);
         System.out.println(cola.name + " " + cola.price + " " + cola.stock);
-        Products fanta = new Products(2);
+        Products fanta = new Products("fanta", 100, 2);
         System.out.println(fanta.name + " " + fanta.price + " " + fanta.stock);
     }
 }
