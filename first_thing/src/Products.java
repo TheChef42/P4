@@ -1,8 +1,8 @@
 import java.sql.*;
 public class Products {
     private int productID;
-    private String name;
-    private float price;
+    public String name;
+    public float price;
     private int stock;
     public static String[] products;
 
