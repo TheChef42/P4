@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.Scanner;
 import java.util.Objects;
 public class Users {
-    private int ID;
+    private int id;
     private String email;
     protected String password;
     public String firstName;
@@ -13,10 +13,10 @@ public class Users {
     public Users(){
     }
 
-    protected void createUser(String email, String password, String firstName, String lastName) {
+    protected static void createUser(String email, String password, String firstName, String lastName) {
         try {
             Connection con = ConnectionManager.getConnection();
-            String qry = "insert into users (USERNAME,PASSWORD,EMAIL, BALANCE) values(?,?,?,?)";
+            String qry = "INSERT INTO customer (EMAIL, PASSWORD, FIRSTNAME, LASTNAME) values(?,?,?,?)";
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
             st.setString(2, password);
@@ -28,15 +28,14 @@ public class Users {
             e.printStackTrace();
         }
     }
-    public Users login(String email, String password) {
+    public static Users login(String email, String password) {
         // declaring it out of the if statement to return it at the end
-        Users currentUser = null;
+        Users currentUser = new Users();
         if (verifyPassword(email, password)) {
-            currentUser = new Users();
             Connection con = ConnectionManager.getConnection();
             PreparedStatement st = null;
             ResultSet rs = null;
-            String query = "SELECT * FROM users WHERE EMAIL=?";
+            String query = "SELECT * FROM customer WHERE EMAIL=?";
     
             try {
                 st = con.prepareStatement(query);
@@ -44,7 +43,7 @@ public class Users {
                 rs = st.executeQuery();
     
                 if (rs.next()) {
-                    currentUser.ID = rs.getInt("id");
+                    currentUser.id = rs.getInt("id");
                     currentUser.email = email;
                     currentUser.password = password;
                     currentUser.firstName = rs.getString("firstname");
@@ -57,27 +56,34 @@ public class Users {
                 System.out.println("Error: " + ex.getMessage());
             } finally {
                 try{
-                    // closing input options
+                    // closing input objects
+                if (rs != null){
                     rs.close();
+                }
+                if (st != null){
                     st.close();
+                }
+                if (con != null){
                     con.close();
+                }
 
                 } catch (SQLException ex) {
                     System.out.println("Error: " + ex.getMessage());
                 }
             }
         } else {
+            currentUser = null;
             System.out.println("Access denied!");
         }
         return currentUser;
     }
     
 
-    public boolean verifyPassword(String email, String password) {
+    public static boolean verifyPassword(String email, String password) {
         Connection con = ConnectionManager.getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
-        String query = "SELECT PASSWORD FROM users WHERE EMAIL=?";
+        String query = "SELECT PASSWORD FROM customer WHERE EMAIL=?";
         try {
             st = con.prepareStatement(query);
             st.setString(1, email);
@@ -93,13 +99,14 @@ public class Users {
             // closing the connection:
         } finally {
             try {
-                if (rs != null) {
+                // closing input objects
+                if (rs != null){
                     rs.close();
                 }
-                if (st != null) {
+                if (st != null){
                     st.close();
                 }
-                if (con != null) {
+                if (con != null){
                     con.close();
                 }
             } catch (SQLException e) {
@@ -108,38 +115,41 @@ public class Users {
         }
     }
 
-    public void logout(Users currentUser) {
+    public static void logout(Users currentUser) {
+        // this method doesn work, and cannot
+        // use this method like this:
+        // currentUser = null;
         currentUser = null;
     }
     public void seeUserAccount() {
-        System.out.print(this.ID);
-        System.out.print(this.email);
+        System.out.println(this.id);
+        System.out.println(this.email);
         // may have to be protected somehow:
-        System.out.print(this.password);
-        System.out.print(this.firstName);
-        System.out.print(this.lastName);
-        System.out.print(this.balance);
-        System.out.print(this.created_at);
+        System.out.println(this.password);
+        System.out.println(this.firstName);
+        System.out.println(this.lastName);
+        System.out.println(this.balance);
+        System.out.println(this.created_at);
     }
-    public void deleteAccount(int accountId) {
+    public static void deleteAccount(Users currentUser) {
         //TODO: Implement how to delete a useraccount
         Connection con = ConnectionManager.getConnection();
         PreparedStatement pstmt = null;
-        boolean success = false;
     
         try {
             // Prepare the SQL query to delete the account
-            String sql = "DELETE FROM accounts WHERE account_id = ?";
+            String sql = "DELETE FROM customer WHERE id = ?";
             pstmt = con.prepareStatement(sql);
     
-            // Set the account ID parameter
-            pstmt.setInt(1, this.ID);
+            // Set the account id parameter
+            pstmt.setInt(1, currentUser.id);
     
             // Execute the query and check the return value
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Account deleted successfully");
-                success = true;
+                //end that users session as well
+                currentUser = null;
             } else {
                 System.out.println("Account not found");
             }
@@ -164,8 +174,73 @@ public class Users {
         return this.firstName + " " + this.lastName;
     }
 
-    // what is this for??
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String newEmail) {
+        this.email = newEmail;
+        Connection con = ConnectionManager.getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        String query = "UPDATE customer SET email=? WHERE id=?";
+        try {
+            st = con.prepareStatement(query);
+            st.setString(1, newEmail);
+            st.setInt(2, this.id);
+            int rowsAffected = st.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated.");
+            st.close();
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.getMessage());
+            }
+        }
+        
     }
+
+    public float getBalance() {
+        return this.balance;
+    }
+
+    public void requestPayout() {
+        System.out.print("You have requestet to get " + this.balance + " money payed back");
+        // something something mobilepay
+    }
+
+    // Testing
+    public static void main(String[] args) throws Exception {
+        String email = "casperbramm@hotmail.com";
+        String password = "goodPassword";
+        String firstName = "Casper";
+        String lastName = "Bramm";
+
+        Users.createUser(email, password, firstName, lastName);
+        
+        Users myUser = Users.login(email, password);
+
+        myUser.seeUserAccount();
+
+        myUser.getName();
+
+        String newEmail = "casperbramm@gmail.com";
+
+        myUser.setEmail(newEmail);
+
+        myUser.getBalance();
+
+        myUser.requestPayout();
+
+        // deleteAccount(myUser);
+
+    }
+
 }
