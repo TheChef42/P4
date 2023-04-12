@@ -19,6 +19,7 @@ public class Users {
             String qry = "INSERT INTO customer (EMAIL, PASSWORD, FIRSTNAME, LASTNAME) values(?,?,?,?)";
             PreparedStatement st = con.prepareStatement(qry);
             st.setString(1, email);
+            // evt. hashing af passwords her:?????
             st.setString(2, password);
             st.setString(3, firstName);
             st.setString(4, lastName);
@@ -122,14 +123,14 @@ public class Users {
         currentUser = null;
     }
     public void seeUserAccount() {
-        System.out.println(this.id);
-        System.out.println(this.email);
+        System.out.println("Id: " + this.id);
+        System.out.println("Email: " +  this.email);
         // may have to be protected somehow:
-        System.out.println(this.password);
-        System.out.println(this.firstName);
-        System.out.println(this.lastName);
-        System.out.println(this.balance);
-        System.out.println(this.created_at);
+        System.out.println("Password" + this.password);
+        System.out.println("First Name:" + this.firstName);
+        System.out.println("Last Name: " + this.lastName);
+        System.out.println("Balance:" + this.balance);
+        System.out.println("Created at:" + this.created_at);
     }
     public static void deleteAccount(Users currentUser) {
         //TODO: Implement how to delete a useraccount
@@ -211,9 +212,42 @@ public class Users {
         return this.balance;
     }
 
+    public void deposit(float money) {
+        this.balance += money;
+        Connection con = ConnectionManager.getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        String query = "UPDATE customer SET balance=? WHERE id=?";
+        try {
+            st = con.prepareStatement(query);
+            st.setFloat(1, this.balance);
+            st.setInt(2, this.id);
+            int rowsAffected = st.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated.");
+            st.close();
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.getMessage());
+            }
+        }
+        
+    }
+
     public void requestPayout() {
         System.out.print("You have requestet to get " + this.balance + " money payed back");
-        // something something mobilepay
+        // something something mobilepay and money
     }
 
     // Testing
@@ -236,6 +270,8 @@ public class Users {
         myUser.setEmail(newEmail);
 
         myUser.getBalance();
+
+        myUser.deposit(100);
 
         myUser.requestPayout();
 
