@@ -10,12 +10,12 @@ import java.util.Scanner;
 public class Transaction {
     private int id;
     //private Time date;
-    private String[] products;
+    private ArrayList<Product> products;
     private String user;
-    private ArrayList basket = new ArrayList<>();
+    private final ArrayList<Product> basket = new ArrayList<Product>();
 
 
-    public String[] getProducts() {
+    public Arraylist<Product> getProducts() {
         //TODO: implement how to return the products
         try {
             Connection con = ConnectionManager.getConnection();
