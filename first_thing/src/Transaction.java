@@ -9,6 +9,7 @@ public class Transaction {
     //private Time date;
     private String[] products;
     private String user;
+    private ArrayList basket = new ArrayList<>();
 
     public String[] getProducts() {
         //TODO: implement how to return the products
@@ -33,25 +34,45 @@ public class Transaction {
         }
         return products;
     }
+    public void addProductToTransaction(String product){
+        //TODO: implement to add product to transaction
+        try {
+            Connection con = ConnectionManager.getConnection();
+            String qry = "SELECT * FROM products";
+            PreparedStatement st = con.prepareStatement(qry);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                // Retrieve product data from the result set
+                int productId = rs.getInt("id");
+                String productName = rs.getString("product");
+                double productPrice = rs.getDouble("price");
+                int productStock = rs.getInt("stock");
+    
+                // Create a new Product object with the retrieved data
+                Product product = new Product(productId, productName, productPrice, productStock);
+
+                // Add the Product object to the basket ArrayList
+                basket.add(product);
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
     public void getTransactionsList(){
         //TODO: implement how to return the transactions
     }
-    public void addProductToTransaction(String product){
-        //TODO: implement to add product to transaction
-        ArrayList<String> productList = new ArrayList<>(Arrays.asList(products));
-        productList.add(product);
-        products = productList.toArray(new String[productList.size()]);
-        System.out.println(productList);
-    }
+    
     public void storeTransaction(){
         //TODO: implement to store the transaction in the databse
     }
     public void deleteProductFromList(){
         //TODO: implement to delete a product from the list
-        ArrayList<String> productList = new ArrayList<>(Arrays.asList(products));
-        productList.remove(index);
-        products = productList.toArray(new String[productList.size()]);
-        System.out.println("Product at index " + index + " deleted successfully.");
+        if (basket.contains(product)) {
+            basket.remove(product);
+            System.out.println("Product '" + product + "' removed from basket.");
+        } else {
+            System.out.println("Product '" + product + "' not found in basket.");
+        }
     }
     public void checkOut(){
         //TODO: implement the checkout
