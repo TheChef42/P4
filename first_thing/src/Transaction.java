@@ -1,8 +1,11 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Transaction {
     private int id;
@@ -10,6 +13,7 @@ public class Transaction {
     private String[] products;
     private String user;
     private ArrayList basket = new ArrayList<>();
+
 
     public String[] getProducts() {
         //TODO: implement how to return the products
@@ -21,12 +25,12 @@ public class Transaction {
             System.out.print("id" + "\t\t");
             System.out.print("product" + "\t\t");
             System.out.print("price" + "\t\t");
-            System.out.print(("stock") + "\t\t");
+            System.out.println(("stock") + "\t\t");
             while(rs.next()){
                 System.out.print(rs.getInt("id") + "\t\t");
                 System.out.print(rs.getString("product") + "\t\t");
                 System.out.print(rs.getString("price") + "\t\t");
-                System.out.print(rs.getString("stock") + "\t\t");
+                System.out.println(rs.getString("stock") + "\t\t");
             }
 
         } catch(SQLException e){
@@ -34,7 +38,26 @@ public class Transaction {
         }
         return products;
     }
-    public void addProductToTransaction(String product){
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int choice;
+        Transaction currentTransaction = new Transaction();
+        currentTransaction.getProducts();
+        System.out.println("\n\n\n");
+        System.out.println("Current basket:");
+        if (currentTransaction.basket.isEmpty())
+            System.out.println("Basket is empty");
+        else
+            System.out.println(currentTransaction.basket);
+        System.out.print("\n Add product to basket (select id): ");
+        choice = scan.nextInt();
+
+
+
+
+    }
+    public void addProductToTransaction(){
         //TODO: implement to add product to transaction
         try {
             Connection con = ConnectionManager.getConnection();
@@ -61,11 +84,30 @@ public class Transaction {
     public void getTransactionsList(){
         //TODO: implement how to return the transactions
     }
-    
-    public void storeTransaction(){
-        //TODO: implement to store the transaction in the databse
+
+    public void storeTransaction(String @NotNull [] basket){
+        //TODO: implement to store the transaction in the database
+
+        try{
+            Connection con = ConnectionManager.getConnection();
+            String transactions_qry = "INSERT INTO transactions (sum, customer) values(?,?)";
+            PreparedStatement st = con.prepareStatement(transactions_qry);
+            float sum = 0;
+            /*for (int i = 0; i <= this.products.length; i++){
+                sum += this.products[i].price;
+            }*/
+
+            for (String products: basket) {
+                String transactions_info_qry = "INSERT INTO transactions_info (transaction_id, product, amount, price, sum_price) values(?,?,?,?,?)";
+                
+            }
+
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
-    public void deleteProductFromList(){
+    public void deleteProductFromList(Product product){
         //TODO: implement to delete a product from the list
         if (basket.contains(product)) {
             basket.remove(product);
@@ -76,5 +118,8 @@ public class Transaction {
     }
     public void checkOut(){
         //TODO: implement the checkout
+    }
+
+    public void setUser(Users user) {
     }
 }

@@ -36,13 +36,13 @@ public class TransactionTest {
     public void getTransactionsList(){
         //TODO: implement how to return the transactions
     }
-    public void addProductToTransaction(String product){
+    /*public void addProductToTransaction(String product){
         //TODO: implement to add product to transaction
         ArrayList<String> productList = new ArrayList<>(Arrays.asList(products));
         productList.add(product);
         products = productList.toArray(new String[productList.size()]);
         System.out.println(productList);
-    }
+    }*/
     public void storeTransaction(){
         //TODO: implement to store the transaction in the database
         
@@ -60,5 +60,9 @@ public class TransactionTest {
             e.printStackTrace();
         }
 
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 }
