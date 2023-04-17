@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -57,6 +54,7 @@ public class Transaction {
             System.out.print("\n Add product to basket (select id): ");
             choice = scan.nextInt();
             if (choice == -1){
+                currentTransaction.storeTransaction(1);
                 break;
             }
             currentTransaction.addProductToTransaction(choice);
@@ -80,29 +78,37 @@ public class Transaction {
         }
         return product;
     }
-
     public void getTransactionsList(){
         //TODO: implement how to return the transactions
     }
-
-    public void storeTransaction(String [] basket){
+    public void storeTransaction(int userId){
         //TODO: implement to store the transaction in the database
-
         try{
             Connection con = ConnectionManager.getConnection();
             String transactions_qry = "INSERT INTO transactions (sum, customer) values(?,?)";
-            PreparedStatement st = con.prepareStatement(transactions_qry);
+            PreparedStatement st = con.prepareStatement(transactions_qry, Statement.RETURN_GENERATED_KEYS);
+            st.setInt(2, userId);
             float sum = 0;
-            /*for (int i = 0; i <= this.products.length; i++){
-                sum += this.products[i].price;
-            }*/
-
-            for (String products: basket) {
-                String transactions_info_qry = "INSERT INTO transactions_info (transaction_id, product, amount, price, sum_price) values(?,?,?,?,?)";
-                
+            for (Products products1: basket){
+                sum += (products1.price* products1.selectAmount);
             }
-
-
+            st.setFloat(1,sum);
+            st.executeUpdate();
+            ResultSet rs = st.getGeneratedKeys();
+            rs.next();
+            int newId = rs.getInt(1);
+            System.out.println(newId);
+            String transactionsInfoQry = "INSERT INTO transactions_info (transaction_id, product, amount, price, sum_price) values(?,?,?,?,?)";
+            PreparedStatement st1 = con.prepareStatement(transactionsInfoQry);
+            for (Products products: basket) {
+                st1.setInt(1, newId);
+                st1.setInt(2, products.getProductID());
+                st1.setInt(3, products.selectAmount);
+                st1.setFloat(4, products.price);
+                st1.setFloat(5, (products.price* products.selectAmount));
+                st1.addBatch();
+            }
+            st1.executeBatch();
         }catch(SQLException e){
             e.printStackTrace();
         }
