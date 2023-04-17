@@ -5,9 +5,11 @@ public class Products {
     public float price;
     private int stock;
     public static String[] products;
+    public int selectAmount;
 
     public Products() {
     }
+
 
     public Products(int productID) {
         try {
@@ -17,9 +19,26 @@ public class Products {
             st.setInt(1, productID);
             ResultSet rs = st.executeQuery();
             rs.next();
+            this.productID = productID;
             this.name = rs.getString("product");
             this.price = (float) rs.getInt("price");
             this.stock = rs.getInt("stock");
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+    public Products(int productID, int selectAmount) {
+        try {
+            Connection con = ConnectionManager.getConnection();
+            String qry = "SELECT * FROM products WHERE id = ?";
+            PreparedStatement st = con.prepareStatement(qry);
+            st.setInt(1, productID);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            this.productID = productID;
+            this.name = rs.getString("product");
+            this.price = (float) rs.getInt("price");
+            this.selectAmount = selectAmount;
         } catch(SQLException e){
             e.printStackTrace();
         }
@@ -36,6 +55,9 @@ public class Products {
         System.out.println(cola.name + " " + cola.price + " " + cola.stock);
         Products fanta = new Products(2);
         System.out.println(fanta.name + " " + fanta.price + " " + fanta.stock);
+    }
+    public String toString(){
+        return this.productID + "\t" + this.name + "\t" + this.price + "\t" + this.stock + "\n";
     }
     public static String[] getProducts() {
         //TODO: implement how to return the products

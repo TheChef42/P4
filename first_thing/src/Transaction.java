@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,27 +8,23 @@ import java.util.Scanner;
 public class Transaction {
     private int id;
     //private Time date;
-    private ArrayList<Product> products;
+    private ArrayList<Products> products = new ArrayList<Products>();
     private String user;
-    private final ArrayList<Product> basket = new ArrayList<Product>();
+    private final ArrayList<Products> basket = new ArrayList<Products>();
 
-
-    public Arraylist<Product> getProducts() {
+    public Transaction() {
+        products = this.getProducts();
+    }
+    public ArrayList<Products> getProducts() {
         //TODO: implement how to return the products
         try {
             Connection con = ConnectionManager.getConnection();
-            String qry = "SELECT * FROM products";
+            String qry = "SELECT id FROM products";
             PreparedStatement st = con.prepareStatement(qry);
             ResultSet rs = st.executeQuery();
-            System.out.print("id" + "\t\t");
-            System.out.print("product" + "\t\t");
-            System.out.print("price" + "\t\t");
-            System.out.println(("stock") + "\t\t");
             while(rs.next()){
-                System.out.print(rs.getInt("id") + "\t\t");
-                System.out.print(rs.getString("product") + "\t\t");
-                System.out.print(rs.getString("price") + "\t\t");
-                System.out.println(rs.getString("stock") + "\t\t");
+                Products product = new Products(rs.getInt("id"));
+                products.add(product);
             }
 
         } catch(SQLException e){
@@ -41,51 +35,57 @@ public class Transaction {
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-        int choice;
+        int choice = 0;
+        int quit = 0;
         Transaction currentTransaction = new Transaction();
-        currentTransaction.getProducts();
-        System.out.println("\n\n\n");
-        System.out.println("Current basket:");
-        if (currentTransaction.basket.isEmpty())
-            System.out.println("Basket is empty");
-        else
-            System.out.println(currentTransaction.basket);
-        System.out.print("\n Add product to basket (select id): ");
-        choice = scan.nextInt();
+        while(true) {
 
-
-
-
-    }
-    public void addProductToTransaction(){
-        //TODO: implement to add product to transaction
-        try {
-            Connection con = ConnectionManager.getConnection();
-            String qry = "SELECT * FROM products";
-            PreparedStatement st = con.prepareStatement(qry);
-            ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                // Retrieve product data from the result set
-                int productId = rs.getInt("id");
-                String productName = rs.getString("product");
-                double productPrice = rs.getDouble("price");
-                int productStock = rs.getInt("stock");
-    
-                // Create a new Product object with the retrieved data
-                Product product = new Product(productId, productName, productPrice, productStock);
-
-                // Add the Product object to the basket ArrayList
-                basket.add(product);
+            System.out.println("Available products: ");
+            //https://www.callicoder.com/java-arraylist/
+            currentTransaction.products.forEach(products -> {
+                System.out.println(products.getProductID() + "\t" + products.name + "\t" + products.price + "\t" + products.getStock());
+            });
+            System.out.println("\n\n");
+            System.out.println("Current basket:");
+            if (currentTransaction.basket.isEmpty())
+                System.out.println("Basket is empty");
+            else {
+                currentTransaction.basket.forEach(products -> {
+                    System.out.println(products.name + "\t" + products.price + "\t" + products.selectAmount + "\t" +(products.price * products.selectAmount));
+                });
             }
-        } catch(SQLException e){
-            e.printStackTrace();
+            System.out.print("\n Add product to basket (select id): ");
+            choice = scan.nextInt();
+            if (choice == -1){
+                break;
+            }
+            currentTransaction.addProductToTransaction(choice);
         }
     }
+    public void addProductToTransaction(int productID){
+        //TODO: implement to add product to transaction
+        if(searchBasketID(productID) != null){
+            Products product = searchBasketID(productID);
+            product.selectAmount++;
+        } else {
+        Products product = new Products(productID, 1);
+        basket.add(product);
+        }
+    }
+    private Products searchBasketID (int parameterValue){
+        Products product = null;
+        for (Products products1: basket) {
+            if (products1.getProductID() == parameterValue)
+                product = products1;
+        }
+        return product;
+    }
+
     public void getTransactionsList(){
         //TODO: implement how to return the transactions
     }
 
-    public void storeTransaction(String @NotNull [] basket){
+    public void storeTransaction(String [] basket){
         //TODO: implement to store the transaction in the database
 
         try{
@@ -107,7 +107,7 @@ public class Transaction {
             e.printStackTrace();
         }
     }
-    public void deleteProductFromList(Product product){
+    public void deleteProductFromList(Products product){
         //TODO: implement to delete a product from the list
         if (basket.contains(product)) {
             basket.remove(product);
