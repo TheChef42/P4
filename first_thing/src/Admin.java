@@ -44,11 +44,13 @@ public class Admin {
             e.printStackTrace();
         }
     }
+
     public int viewProducts(){
         //TODO: implement how to view and select a product
         int productID = 0;
         return productID;
     }
+
     public void createProduct(String productName, float productPrice, int productStock){
         try {
             Connection con = ConnectionManager.getConnection();
@@ -62,23 +64,70 @@ public class Admin {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args){
-        Admin chris = new Admin();
-        Products cola = new Products(2);
-        System.out.println(cola.getName() + cola.getPrice());
-        System.out.println("Du go");
-        chris.viewUsers();
-        System.out.print("Who do you want to delete, bitch!");
-        Scanner scan = new Scanner(System.in);
-        int in = scan.nextInt();
-        chris.deleteUser(in);
-        chris.viewUsers();
-        Products.getProducts();
-    }
-    public void updateProduct(){
+    
+    public void updateProduct(Products product, String newName, float newPrice, int newStock) {
         //TODO: implement updateProduct
-    }
-    public void removeProduct(){
+            try {
+                Connection con = ConnectionManager.getConnection();
+                String qry = "UPDATE products SET product = ?, price = ?, stock = ? WHERE id = ?";
+                PreparedStatement st = con.prepareStatement(qry);
+                st.setString(1, newName);
+                st.setFloat(2, newPrice);
+                st.setInt(3, newStock);
+                st.setInt(4, product.getProductID());
+                int numRowsAffected = st.executeUpdate();
+                if (numRowsAffected == 0) {
+                    System.out.println("Product with ID " + product.getProductID() + " does not exist.");
+                } else {
+                    System.out.println("Product with ID " + product.getProductID() + " updated successfully.");
+                    // Update the object's attributes if the database update was successful
+                    product.setName(newName);
+                    product.setPrice(newPrice);
+                    product.setStock(newStock);
+                }
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    public void removeProduct(int productId) {
         //TODO: implement removeProduct
-    }
-}
+            Connection con = null;
+            PreparedStatement pstmt = null;
+        
+            try {
+                con = ConnectionManager.getConnection();
+                pstmt = con.prepareStatement("DELETE FROM products WHERE id = ?");
+                pstmt.setInt(1, productId);
+                int rowsAffected = pstmt.executeUpdate();
+                if (rowsAffected == 0) {
+                    System.out.println("No product found with ID " + productId);
+                } else {
+                    System.out.println(rowsAffected + " product(s) removed.");
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error removing product: " + ex.getMessage());
+            } finally {
+                try {
+                    if (pstmt != null) {
+                        pstmt.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error closing connection: " + ex.getMessage());
+                }
+            }
+        }
+        public static void main(String[] args) {
+            Admin admin = new Admin();
+            admin.viewUsers();
+            admin.removeProduct(2);
+            admin.viewProducts();
+            Products product = new Products("product name", 9.99f, 10);
+            admin.updateProduct(product, "new product name", 19.99f, 20);
+            admin.viewProducts();
+            admin.createProduct("new product", 14.99f, 30);
+            admin.viewProducts();
+        }
+    }        
