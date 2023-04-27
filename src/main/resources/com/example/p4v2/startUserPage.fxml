@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="901.0" prefWidth="1221.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.p4v2.StartUserPageController">
+   <center>
+      <GridPane alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <BorderPane.margin>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </BorderPane.margin>
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="Item0Label" text="Not in use">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Item0Button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddButton0Click" text="Add to basket">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+               <children>
+                  <Label fx:id="Item1Label" text="Not in use">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Item1Button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddButton1Click" text="Add to basket">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+               <children>
+                  <Label fx:id="Item2Label" text="Not in use">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Item2Button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddButton2Click" text="Add to basket">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label fx:id="Item3Label" text="Not in use">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Item3Button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddButton3Click" text="Add to basket">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+               <children>
+                  <Label fx:id="Item4Label" text="Not in use">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Item4Button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddButton4Click" text="Add to basket">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Label fx:id="Item5Label" text="Not in use">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Item5Button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddButton5Click" text="Add to basket">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+   </center>
+   <right>
+      <VBox alignment="TOP_CENTER" prefHeight="736.0" prefWidth="419.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="50.0" right="30.0" top="50.0" />
+         </BorderPane.margin>
+         <children>
+            <Label text="Basket">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <TableView fx:id="basket" prefHeight="482.0" prefWidth="419.0">
+              <columns>
+                <TableColumn fx:id="colProduct" prefWidth="100.0" text="Product" />
+                <TableColumn fx:id="colPrice" prefWidth="100.0" text="Price" />
+                <TableColumn fx:id="colAmount" prefWidth="100.0" text="Amount" />
+                <TableColumn fx:id="colSum" prefWidth="100.0" text="Sum" />
+              </columns>
+            </TableView>
+            <Label text="Total amount: ">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="basketSum" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="566.0" prefHeight="58.0" prefWidth="92.0" text="0" textAlignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="checkOut" mnemonicParsing="false" onAction="#CheckOutClick" text="Check out">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Cancel">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </right>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false">
+               <graphic>
+                  <MenuButton mnemonicParsing="false" text="Menu">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="User Profile" />
+                        <MenuItem mnemonicParsing="false" text="Fill up" />
+                    </items>
+                  </MenuButton>
+               </graphic>
+          </Menu>
+          <Menu mnemonicParsing="false">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+               <graphic>
+                  <Label fx:id="PrintName" prefHeight="70.0" prefWidth="400.0" textFill="#4a00ff">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+               </graphic>
+          </Menu>
+          <Menu mnemonicParsing="false">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+               <graphic>
+                  <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="36.0" prefWidth="313.0" text="Current balance:" textAlignment="RIGHT">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </graphic>
+          </Menu>
+            <Menu mnemonicParsing="false">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+               <graphic>
+                  <Label fx:id="userBalance" alignment="TOP_RIGHT" text="NaN">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </Menu>
+            <Menu mnemonicParsing="false">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+               <graphic>
+                  <HBox>
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#gotoUserPageButtonClick" text="Userpage">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="100.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </graphic>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#logoutButtonClick" text="Log out" textFill="#ed1515">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Label fx:id="productWarning" textFill="#ed1515">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+</BorderPane>
